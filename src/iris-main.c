@@ -13,8 +13,11 @@
 #include "iris-main.h"
 #include "iris-routes.h"
 
+/* start iris */
 int iris_main(struct iris_env *env, int flags){
-    
+    for(;;){
+        
+    }
     free(env);
     return 0;
 }
