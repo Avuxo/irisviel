@@ -11,6 +11,6 @@ struct iris_env{
     int numRoutes;
 };
 
-int iris_main(int flags);
+int iris_main(struct iris_env *env, int flags);
 struct iris_env *iris_createEnv();
 int iris_listen();
