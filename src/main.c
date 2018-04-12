@@ -27,7 +27,8 @@ int main(int argc, char **argv){
     /* allocate an environment */
     struct iris_env *env = iris_createEnv();
 
-    iris_main(env, 0);
+    /*initialize the irisviel code*/
+    iris_init(env, 0);
 
     iris_registerRoute(env, "/", &route_index);
     iris_registerRoute(env, "/about", &route_about);
@@ -43,7 +44,9 @@ int main(int argc, char **argv){
 
     /*about page*/
     char *aboutPage = iris_getRoute(env, "/about", "");
-    free(aboutPage); 
+    free(aboutPage);
+
+    iris_exit(env);
 
     return 0;
 }
