@@ -5,6 +5,7 @@
 
 #define VERSION 1
 
+/* return codes */
 #define IRIS_SUCCESS 1
 #define IRIS_FATAL_ERROR 2
 
