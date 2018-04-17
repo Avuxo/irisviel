@@ -20,7 +20,9 @@ int iris_init(struct iris_env *env, int flags){
     printf("Starting Irisviel Version %d on port %d...\n", VERSION, PORT);
 
     iris_log("Starting main thread...");
-    if(pthread_create(&env->mainThread, NULL, iris_run, NULL)){
+    /*main thread*/
+
+    if(pthread_create(&env->mainThread, NULL, iris_run, (void *) env)){
         iris_fatalError("Unable to create main thread for Irisviel, exiting...");
     }
     iris_log("Main thread started."); /*this could *theoretically* print after the
@@ -32,8 +34,11 @@ int iris_init(struct iris_env *env, int flags){
     return 0;
 }
 
-/*main request handling*/
-void *iris_run(){
+/*
+  main request handling
+  void * for pthread create; env is an iris_env.
+*/
+void *iris_run(void *env){
 
     /*socket information*/
     struct sockaddr_in serverAddr, clientAddr;
@@ -42,7 +47,6 @@ void *iris_run(){
     /*client request buffer*/
     const int bufferSize = 1024;
     char *requestBuffer = malloc(sizeof(char) * bufferSize);
-    
     int optionName = 1;
     
 
@@ -89,13 +93,35 @@ void *iris_run(){
             
             /*read request into the buffer*/
             read(client, requestBuffer, bufferSize - 1);
-            iris_log(requestBuffer);
+
+            /*buffer for copying the string to tokenize it*/
+            char *tempCopyBuffer = malloc(sizeof(char) * bufferSize);
+            strcpy(tempCopyBuffer, requestBuffer); /*copy the request*/
+
+            /*tokenize the string to get the path*/
+            char *path = strtok(tempCopyBuffer, " ");
+            while(path){
+                if(path[0] == '/'){/*does string start with a slash*/
+                    break;
+                }
+                path = strtok(NULL, " ");
+            }
+            
+            if(path == NULL){/*there was no path in the request*/
+                iris_fatalError("No GET path in request...");
+            }
+
+            char *page = iris_getRoute((struct iris_env *) env, path, "");
+
+            iris_log(page);
+            
+            write(client, page, strlen(page));
+            exit(0);
         }
-        write(client, "test", 4);
-        close(client);
-        exit(0);
+        close(client); /*parent process*/
+        
     }
-    close(client); /*parent process*/
+
     
     
     return NULL;

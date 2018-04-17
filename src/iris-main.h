@@ -22,7 +22,7 @@ struct iris_env{
 
 int iris_init(struct iris_env *env, int flags);
 struct iris_env *iris_createEnv();
-void *iris_run();
+void *iris_run(void *env);
 int iris_listen();
 void iris_exit(struct iris_env *env);
 

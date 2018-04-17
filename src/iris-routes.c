@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <string.h>
 #include "iris-main.h"
 #include "iris-routes.h"
 #include "iris-log.h"
@@ -23,7 +23,7 @@ int iris_registerRoute(struct iris_env *env, char *route, char *(*callback)(char
 /*call the callback for a given route and return the result*/
 char *iris_getRoute(struct iris_env *env, char *route, char *args){
     for(int i=0; i<env->numRoutes; i++){
-        if(env->routeMap[i].symbol == route){
+        if(strcmp(env->routeMap[i].symbol,route) == 0){
             char *headers = iris_generateHTTPHeaders(200);
             char *html = env->routeMap[i].callback(args);
 
