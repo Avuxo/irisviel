@@ -28,3 +28,17 @@ To exit Irisviel (at program end), call the `iris_exit()` function. This functio
 
 ## Building
 This assumes you are on a UNIX system. Simply run `$ make` in the source directory. The Irisviel binary will be output into `bin/irisviel`
+
+## API
+
+All Irisviel structs and functions start with `iris_`. All Irisviel functions that operate on state take an `iris_env` struct pointer as the first arugment.
+
+`struct iris_env` : The environment structure that maintains state.
+
+`iris_env *iris_createEnv()` : allocate an environment struct.
+
+`void iris_registerRoute(iris_env *env, char *route, char *(*callback)(char *arg))` : create a route using `callback` to generate the HTML.
+
+`void iris_init(iris_env *env, int flags)` : initialize the irisviel listener.
+
+`void iris_exit(iris_env *env)` : Exit Irisiviel and free allocated memory.
