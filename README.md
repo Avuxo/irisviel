@@ -1,6 +1,8 @@
 # Irisviel
 A lightweight C web framework with minimal dependencies
 
+![logo](logo.png)
+
 ## Usage
 
 The only two headers that you need to create a webpage are `iris-routes.h` and `iris-main.h`.
